@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Consulta de Cupones por Departamento</h2>
+    
+    <!-- Buscador -->
+    <form method="POST">
+        <label for="departamento">Nombre del departamento:</label>
+        <input type="text" name="departamento" id="departamento" placeholder="Ej. electronica" required>
+        <button type="submit">Buscar</button>
+    </form>
+    <br>
+    
+    <!-- Mensajes de error (si no encuentra nada) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul style="border: 1px solid black; padding: 10px; background-color: #f8f9fa;">
+        {% for category, message in messages %}
+          <li style="color: red;">{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Tabla de resultados -->
+    {% if cupones %}
+        <h3>Resultados para "{{ departamento }}":</h3>
+        <table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;">
+            <thead style="background-color: #f2f2f2;">
+                <tr>
+                    <th>Código del Cupón</th>
+                    <th>Cliente</th>
+                    <th>Promoción</th>
+                    <th>Fecha de Generación</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cupon in cupones %}
+                <tr>
+                    <td><strong>{{ cupon.codigo }}</strong></td>
+                    <td style="text-transform: capitalize;">{{ cupon.cliente }}</td>
+                    <td>{{ cupon.promocion_nombre }}</td>
+                    <td>{{ cupon.fecha_hora }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
