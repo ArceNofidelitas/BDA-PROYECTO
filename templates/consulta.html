@@ -6,7 +6,7 @@
     <!-- Buscador -->
     <form method="POST">
         <label for="departamento">Nombre del departamento:</label>
-        <input type="text" name="departamento" id="departamento" placeholder="Ej. electronica" required>
+        <input type="text" name="departamento" id="departamento" placeholder="Ej. electronica">
         <button type="submit">Buscar</button>
     </form>
     <br>
@@ -28,19 +28,17 @@
         <table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;">
             <thead style="background-color: #f2f2f2;">
                 <tr>
-                    <th>Código del Cupón</th>
-                    <th>Cliente</th>
-                    <th>Promoción</th>
-                    <th>Fecha de Generación</th>
+                    <th>Departamento</th>
+                    <th>Total Cupones Emitidos</th>
+                    <th>Clientes Distintos</th>
                 </tr>
             </thead>
             <tbody>
-                {% for cupon in cupones %}
+                {% for fila in cupones %}
                 <tr>
-                    <td><strong>{{ cupon.codigo }}</strong></td>
-                    <td style="text-transform: capitalize;">{{ cupon.cliente }}</td>
-                    <td>{{ cupon.promocion_nombre }}</td>
-                    <td>{{ cupon.fecha_hora }}</td>
+                    <td style="text-transform: capitalize;"><strong>{{ fila.departamento }}</strong></td>
+                    <td>{{ fila.total_cupones }}</td>
+                    <td>{{ fila.clientes_distintos }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
