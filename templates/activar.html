@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Activar Promoción</h2>
+    <p>Selecciona una promoción del catálogo, indica la cantidad de cupones disponibles y la duración en minutos.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul style="border: 1px solid black; padding: 10px; background-color: #f8f9fa;">
+        {% for category, message in messages %}
+          <li style="color: {% if category == 'error' %}red{% else %}green{% endif %};">{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if promociones %}
+        <form method="POST">
+            <div>
+                <label for="promo_id">Promoción del catálogo:</label><br>
+                <select name="promo_id" id="promo_id" required>
+                    <option value="">-- Selecciona una promoción --</option>
+                    {% for promo in promociones %}
+                        <option value="{{ promo._id }}">
+                            {{ promo.nombre }} — {{ promo.departamento }}{% if promo.descuento %} ({{ promo.descuento }}){% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <br>
+
+            <div>
+                <label for="cupones">Cantidad de cupones disponibles:</label><br>
+                <input type="number" name="cupones" id="cupones" min="1" step="1" placeholder="Ej. 5" required>
+            </div>
+            <br>
+
+            <div>
+                <label for="minutos">Duración (en minutos):</label><br>
+                <input type="number" name="minutos" id="minutos" min="1" step="1" placeholder="Ej. 30" required>
+            </div>
+            <br>
+
+            <button type="submit">Activar Promoción</button>
+        </form>
+    {% else %}
+        <p>No hay promociones cargadas en el catálogo todavía. Primero realiza la <a href="/carga-inicial">Carga Inicial de Promociones</a>.</p>
+    {% endif %}
+{% endblock %}
