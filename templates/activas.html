@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Promociones Activas</h2>
+    <p>Lista de promociones vigentes obtenida directamente desde Redis. Recarga la página para actualizar los cupones y el tiempo restante.</p>
+
+    <p>
+        <a href="/promociones-activas"><button type="button">Actualizar lista</button></a>
+        <a href="/activar-promocion"><button type="button">Activar otra promoción</button></a>
+    </p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul style="border: 1px solid black; padding: 10px; background-color: #f8f9fa;">
+        {% for category, message in messages %}
+          <li style="color: {% if category == 'error' %}red{% else %}green{% endif %};">{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if promociones %}
+        <table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;">
+            <thead style="background-color: #f2f2f2;">
+                <tr>
+                    <th>Promoción</th>
+                    <th>Departamento</th>
+                    <th>Cupones disponibles</th>
+                    <th>Tiempo restante</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for promo in promociones %}
+                <tr>
+                    <td><strong>{{ promo.nombre }}</strong></td>
+                    <td>{{ promo.departamento }}</td>
+                    <td>
+                        {{ promo.cupones }}
+                        {% if promo.cupones == 0 %}
+                            <span style="color: red;">(Agotada)</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ promo.tiempo_restante }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay promociones activas en este momento. Puedes activar una en <a href="/activar-promocion">Activar Promoción</a>.</p>
+    {% endif %}
+{% endblock %}
